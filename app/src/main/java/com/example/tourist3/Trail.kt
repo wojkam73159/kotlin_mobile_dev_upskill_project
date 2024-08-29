@@ -6,6 +6,7 @@ data class Trail(
     val difficulty: String, // Trudność
     val length: String,    // Długość
     val color: String,     // Szlak
-    val time: String       // Czas
+    val time: String,      // Czas
+    val imageUrl: String   // New field for image URL
 )
 
