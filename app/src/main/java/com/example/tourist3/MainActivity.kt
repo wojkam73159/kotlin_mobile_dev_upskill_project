@@ -3,96 +3,53 @@ package com.example.tourist3
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.compose.foundation.clickable
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.AccountCircle
-//import androidx.compose.material.icons.filled.Bookmarks
-//import androidx.compose.material.icons.filled.Dashboard
-import androidx.compose.material3.*
-import androidx.compose.runtime.*
-import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.verticalScroll
+import androidx.activity.enableEdgeToEdge
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Surface
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.unit.dp
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import kotlinx.coroutines.launch
+import com.example.tourist3.ui.theme.Tourist3Theme
+import androidx.compose.material.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Menu
+import androidx.compose.ui.res.stringResource
+
+
+
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            MainScreenContent()
-        }
-    }
-}
+            var showSplash by remember { mutableStateOf(true) }  // State to show/hide splash screen
 
-@OptIn(ExperimentalMaterial3Api::class)
-@Composable
-fun MainScreenContent() {
-    val drawerState = rememberDrawerState(DrawerValue.Closed)
-    val snackbarHostState = remember { SnackbarHostState() }
-    val scope = rememberCoroutineScope()
-    val navController = rememberNavController()
-
-    ModalNavigationDrawer(
-        drawerState = drawerState,
-        drawerContent = {
-            ModalDrawerSheet {
-                DrawerContent(navController = navController, drawerState = drawerState)
+            if (showSplash) {
+                SplashScreen(onSplashFinished = { showSplash = false })
+            } else {
+                Box(modifier = Modifier.fillMaxSize()) {
+                    val navController = rememberNavController()
+                    SetupNavGraph(navController = navController)
+                }
             }
-        },
-        content = {
-            Scaffold(
-                topBar = {
-                    CenterAlignedTopAppBar(
-                        title = { Text("Mountain Trails") }
-                    )
-                },
-                snackbarHost = { SnackbarHost(snackbarHostState) },
-                floatingActionButton = {
-                    var clickCount by remember { mutableStateOf(0) }
-                    ExtendedFloatingActionButton(
-                        onClick = {
-                            scope.launch {
-                                snackbarHostState.showSnackbar("Snackbar # ${++clickCount}")
-                            }
-                        }
-                    ) {
-                        Text("Show snackbar")
-                    }
-                },
-                content = { innerPadding ->
-                    Box(modifier = Modifier.padding(innerPadding)) {
-                        SetupNavGraph(navController = navController)
-                    }
-                }
-            )
+
+
+
         }
-    )
-}
 
-@Composable
-fun DrawerContent(navController: NavHostController, drawerState: DrawerState) {
-    val scope = rememberCoroutineScope()
-    Column(modifier = Modifier.verticalScroll(rememberScrollState())) {
-        DrawerHeader()  // Adding header to the drawer
-
-        Spacer(modifier = Modifier.height(16.dp))  // Spacer for spacing between header and items
-
-        Text(
-            text = "Okolice Giewontu i Czerwonych Wierchów",
-            modifier = Modifier
-                .padding(16.dp)
-                .clickable {
-                    scope.launch { drawerState.close() }
-                    navController.navigate("trail_grid_screen")
-                }
-        )
-        // Add more navigation items here
     }
 }
 
