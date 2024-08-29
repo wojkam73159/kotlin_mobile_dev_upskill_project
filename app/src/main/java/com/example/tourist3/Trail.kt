@@ -1,5 +1,6 @@
 package com.example.tourist3
 
+import androidx.annotation.DrawableRes
 
 data class Trail(
     val name: String,      // Trasa
@@ -7,6 +8,5 @@ data class Trail(
     val length: String,    // Długość
     val color: String,     // Szlak
     val time: String,      // Czas
-    val imageUrl: String   // New field for image URL
+    @DrawableRes val imageResId: Int
 )
-
