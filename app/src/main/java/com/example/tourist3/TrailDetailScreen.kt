@@ -2,15 +2,20 @@ package com.example.tourist3
 
 import android.content.Intent
 import android.net.Uri
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
-import androidx.compose.material3.Button
-import androidx.compose.material3.Text
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.*
 import androidx.compose.runtime.*
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.unit.dp
 import androidx.compose.ui.Alignment
-import androidx.compose.material3.MaterialTheme
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+import androidx.compose.foundation.background
 
 @Composable
 fun TrailDetailScreen(trailId: String?) {
@@ -25,7 +30,37 @@ fun TrailDetailScreen(trailId: String?) {
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         // Display trail details
-        Text(text = "Details of $trailId", style = MaterialTheme.typography.titleMedium)
+        Text(
+            text = "Details of $trailId",
+            style = MaterialTheme.typography.titleMedium
+        )
+
+        Spacer(modifier = Modifier.height(16.dp))
+
+        // Placeholder for Trail Route Image
+        Box(
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(200.dp)
+                .background(MaterialTheme.colorScheme.surface, RoundedCornerShape(8.dp))
+        ) {
+            Image(
+                painter = painterResource(id = R.drawable.ic_launcher_foreground), // Replace with an actual image resource
+                contentDescription = "Trail Route",
+                modifier = Modifier.fillMaxSize()
+            )
+        }
+
+        Spacer(modifier = Modifier.height(16.dp))
+
+        // Trail Detailed Description
+        Text(
+            text = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+            style = MaterialTheme.typography.bodyLarge,
+            textAlign = TextAlign.Justify,
+            fontSize = 16.sp,
+            modifier = Modifier.padding(horizontal = 16.dp)
+        )
 
         Spacer(modifier = Modifier.height(16.dp))
 
