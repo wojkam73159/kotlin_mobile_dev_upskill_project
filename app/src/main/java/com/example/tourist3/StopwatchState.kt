@@ -1,11 +1,12 @@
 package com.example.tourist3
 
 import androidx.compose.runtime.*
-import kotlinx.coroutines.delay
+import kotlinx.coroutines.*
 
 class StopwatchState {
-    private var time by mutableLongStateOf(0L)
+    private var time by mutableStateOf(0L)
     private var isRunning by mutableStateOf(false)
+    private var coroutineScope: CoroutineScope? = null
 
     val formattedTime: String
         get() = formatTime(time)
@@ -13,21 +14,23 @@ class StopwatchState {
     fun start() {
         if (isRunning) return
         isRunning = true
+        coroutineScope = CoroutineScope(Dispatchers.Main)
+        coroutineScope?.launch {
+            while (isRunning) {
+                delay(1000L)  // Tick every second
+                time += 1000L
+            }
+        }
     }
 
     fun pause() {
         isRunning = false
+        coroutineScope?.cancel()
     }
 
     fun reset() {
-        isRunning = false
+        pause()
         time = 0L
-    }
-
-    fun tick() {
-        if (isRunning) {
-            time += 1000L
-        }
     }
 
     private fun formatTime(timeMillis: Long): String {
